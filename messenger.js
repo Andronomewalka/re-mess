@@ -29,7 +29,7 @@ function internalUnsubscribe(appMessage, callback, priority = -1) {
 }
 
 export function sendMessage(appMessage, ...args) {
-    // console.log('Messenger:: send', appMessage, args, this.messages)
+    // console.log('Messenger:: send', appMessage, args)
     messages.filter(cur => cur.appMessage === appMessage)
         .forEach(cur => {
             if (typeof cur.callback === 'function')
