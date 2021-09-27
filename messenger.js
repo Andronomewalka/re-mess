@@ -4,17 +4,26 @@ const messages = []
 
 function internalSubscribe(appMessage, callback, priority = -1) {
     // console.log('Messenger:: subscribe', appMessage)
-    // if message with such appMesage exist, insert it before elem with highest priority
-    // so when send is dispatched all messages will be called by their priorities
-    const sameMessage = messages.find(cur => cur.appMessage === appMessage)
-    if (sameMessage)
-        messages.splice(messages.indexOf(sameMessage) - 1, 0, {
-            appMessage, callback, priority
-        })
-    else
-        messages.push({
-            appMessage, callback, priority
-        })
+    const newMessage = { appMessage, callback, priority }
+    if (priority !== -1) {
+        const sameMessages = messages.filter(cur => cur.appMessage === appMessage && cur.priority !== -1)
+        if (sameMessages?.length > 0) {
+            const closestHigherPriority =
+                    sameMessages.reduce((prev, cur) => {
+                        const curDif = cur.priority - priority
+                        const prevDif = prev.priority - priority
+                        return curDif < prevDif && curDif >= 0 ? cur : prev
+                    })
+
+            messages.splice(messages.indexOf(closestHigherPriority) + 1, 0, newMessage)
+        }
+        else {
+            messages.push(newMessage)
+        }
+    }
+    else {
+        messages.push(newMessage)
+    }
 }
 
 function internalUnsubscribe(appMessage, callback, priority = -1) {
