@@ -1,6 +1,6 @@
 # re-mess
 
-**re-mess (react messenger) is a simple event bus for messaging through independent components without having global state.**
+##re-mess (react messenger) is a simple event bus for messaging through independent components without having global state.
 
 1. Use ```useSubscribe``` hook to subsribe to message (it will automatically resubscribe every render), you can also specify message priority if multiple messages with the same appMessage exist.
 
